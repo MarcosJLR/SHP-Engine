@@ -6,6 +6,8 @@
 
 namespace shp
 {
+    TextureManager* TextureManager::s_Instance = nullptr;
+
     bool TextureManager::Load(std::string id, std::string filename) 
     {
         SDL_Surface* surface = IMG_Load(filename.c_str());
@@ -36,7 +38,7 @@ namespace shp
     {
         SDL_Rect srcRect = {column * width, row * height, width, height};
         SDL_Rect dstRect = {x, y, width, height};
-        SDL_RenderCopyEx(Engine::GetInstance()->GetRenderer,
+        SDL_RenderCopyEx(Engine::GetInstance()->GetRenderer(),
                          m_TextureMap[id],
                          &srcRect, &dstRect,
                          angle, center, flip);

@@ -11,8 +11,8 @@ namespace shp
     class TextureManager
     {
         public:
-            static TextureManager* GetInstance(){
-                return s_Instance == nullptr ? new TextureManager() : s_Instance;
+            inline static TextureManager* GetInstance(){
+                return s_Instance = (s_Instance == nullptr ? new TextureManager() : s_Instance);
             }
 
             bool Load(std::string id, std::string filename);
@@ -29,6 +29,6 @@ namespace shp
         private:
             TextureManager() {}
             std::map<std::string, SDL_Texture*> m_TextureMap;
-            static s_Instance{nullptr};
+            static TextureManager* s_Instance;
     };
 };
