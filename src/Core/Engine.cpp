@@ -1,9 +1,16 @@
 #include "Engine.hpp"
 
+#include <iostream>
+#include "Timer.hpp"
+#include "InputHandler.hpp"
+
 namespace shp
 {
+    Engine* Engine::s_Instance = nullptr;
+
     bool Engine::Init(){
-        if(SDL_Init(SDL_INIT_VIDEO) != 0 || IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG) != 0){
+        int imgFlags = IMG_INIT_JPG | IMG_INIT_PNG;
+        if(SDL_Init(SDL_INIT_VIDEO) != 0 || !(IMG_Init(imgFlags) & imgFlags)){
             SDL_Log("Failed to initialize SDL: %s", SDL_GetError());
             return false;
         }
@@ -43,11 +50,11 @@ namespace shp
     }
 
     void Engine::Events(){
-
+        InputHandler::GetInstance()->Listen();
     }
 
     void Engine::Update(){
-        
+        std::cout << Timer::GetInstance()->GetDeltaTime() << std::endl;
     }
 
     void Engine::Render(){

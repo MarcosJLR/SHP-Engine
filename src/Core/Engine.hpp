@@ -13,8 +13,8 @@ namespace shp
     class Engine
     {
         public: 
-            static Engine* GetInstance(){
-                return s_Instance == nullptr ? new Engine() : s_Instance;
+            inline static Engine* GetInstance(){
+                return s_Instance = (s_Instance == nullptr ? new Engine() : s_Instance);
             }
 
             bool Init();
@@ -29,11 +29,15 @@ namespace shp
             inline SDL_Renderer* GetRenderer() { return m_Renderer; }
 
         private:
-            Engine() : m_isRunning(false) {}
+            Engine() 
+                : m_isRunning(false), 
+                  m_Window(nullptr),
+                  m_Renderer(nullptr) 
+            {}
 
             bool m_isRunning;
             SDL_Window* m_Window;
             SDL_Renderer* m_Renderer;
-            static Engine* s_Instance{nullptr};
+            static Engine* s_Instance;
     };
 };
