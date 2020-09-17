@@ -1,18 +1,20 @@
 #include "CollisionHandler.hpp"
 
-#define INF 1e9
+#include "Engine.hpp"
 
 namespace shp
 {
+    const int INF = 0x3f3f3f3f;
+
     CollisionHandler* CollisionHandler::s_Instance = nullptr;
 
     CollisionHandler::CollisionHandler()
     {
-        m_MapObstacles.push_back(Collider(-10, -10, -10, 1300, 10, 980)); // Floor
-        m_MapObstacles.push_back(Collider(-10, -10, -10, 1300, INF, 10)); // Upper wall
-        m_MapObstacles.push_back(Collider(-10, -10, -10, 10, INF, 980));  // Left wall
-        m_MapObstacles.push_back(Collider(1280, -10, -10, 10, INF, 980)); // Right wall
-        m_MapObstacles.push_back(Collider(-10, -10, 960, 1300, INF, 10)); // Lower wall
+        m_MapObstacles.push_back(Collider(-10, -10, -10, SCREEN_WIDTH + 20, 10, SCREEN_HEIGHT + 20));   // Floor
+        m_MapObstacles.push_back(Collider(-10, -10, -10, SCREEN_WIDTH + 20, INF, 10));                  // Upper wall
+        m_MapObstacles.push_back(Collider(-10, -10, -10, 10, INF, SCREEN_HEIGHT + 20));                 // Left wall
+        m_MapObstacles.push_back(Collider(SCREEN_WIDTH, -10, -10, 10, INF, SCREEN_HEIGHT + 20));        // Right wall
+        m_MapObstacles.push_back(Collider(-10, -10, SCREEN_HEIGHT, 1300, INF, 10));                     // Lower wall
     }
 
     bool CollisionHandler::Colliding(Collider collider)
