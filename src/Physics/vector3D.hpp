@@ -8,9 +8,8 @@
  */
 #pragma once
 
-#include <math.h>
-
-#define M_PI           3.14159265358979323846  /* pi */
+#define _USE_MATH_DEFINES
+#include <cmath>
 
 namespace shp
 {
@@ -162,4 +161,14 @@ namespace shp
             return (a - (*this)).cross2D(b - (*this));
         }
     };
+
+    inline double RadiansToDegrees(double radians)
+    {
+        return (radians * 180.0) / M_PI;
+    }
+
+    inline double DegreesToRadians(double degrees)
+    {
+        return (degrees * M_PI) / 180.0;
+    }
 };
