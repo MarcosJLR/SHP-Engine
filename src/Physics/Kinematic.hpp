@@ -4,6 +4,9 @@
 
 namespace shp
 {
+    const double DEFAULT_MAXSPEED = 0.5;
+    const double DEFAULT_MAXROTATION = (0.5 * M_PI) / 360;
+
     struct SteeringOutput
     {
         Vector3 linear; // Linear Acceleration
