@@ -3,11 +3,14 @@
 #include <SDL.h>
 #include <SDL_image.h>
 
-#define SCREEN_WIDTH 1280
-#define SCREEN_HEIGHT 960
+#include "Player.hpp"
+
 
 namespace shp
 {
+    const int SCREEN_WIDTH = 1280;
+    const int SCREEN_HEIGHT = 260;
+
     // Singleton class for the engine
     // Made to join everything together
     class Engine
@@ -39,5 +42,6 @@ namespace shp
             SDL_Window* m_Window;
             SDL_Renderer* m_Renderer;
             static Engine* s_Instance;
+            Player* m_Player;
     };
 };

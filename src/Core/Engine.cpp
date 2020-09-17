@@ -3,6 +3,8 @@
 #include <iostream>
 #include "Timer.hpp"
 #include "InputHandler.hpp"
+#include "TextureManager.hpp"
+#include "Player.hpp"
 
 namespace shp
 {
@@ -34,6 +36,9 @@ namespace shp
             return false;
         }
 
+        TextureManager::GetInstance()->Load("player", "assets/img/Player.png");
+        m_Player = new Player(new ObjectProperties({50,50,50}, 32, 32, 32, "player"));
+
         return m_isRunning = true;
     }
 
@@ -54,10 +59,15 @@ namespace shp
     }
 
     void Engine::Update(){
-        std::cout << Timer::GetInstance()->GetDeltaTime() << std::endl;
+        m_Player->Update(Timer::GetInstance()->GetDeltaTime());
     }
 
     void Engine::Render(){
+        SDL_SetRenderDrawColor(m_Renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+        SDL_RenderClear(m_Renderer);
 
+        m_Player->Draw();
+
+        SDL_RenderPresent(m_Renderer);
     }
 };
