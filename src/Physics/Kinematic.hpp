@@ -4,8 +4,11 @@
 
 namespace shp
 {
-    const double DEFAULT_MAXSPEED = 0.5;
-    const double DEFAULT_MAXROTATION = (0.5 * M_PI) / 360;
+    const double DEFAULT_MAXSPEED = 500;
+    const double DEFAULT_MAXROTATION = (500 * M_PI) / 360;
+    const double DEFAULT_MAXACCELERATION = 1;
+    const double DEFAULT_MAXANGULAR = 0.05;
+
 
     struct SteeringOutput
     {
