@@ -4,6 +4,9 @@ namespace shp
 {
     void Kinematic::Update(SteeringOutput steering, double dt)
     {
+        // Apply Gravity
+        steering.linear -= GRAVITY * Vector3::Y;
+
         // Update velocity and rotation
         m_Velocity += steering.linear * dt;
         m_Rotation += steering.angular * dt;

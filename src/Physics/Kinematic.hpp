@@ -8,6 +8,7 @@ namespace shp
     const double DEFAULT_MAXROTATION = M_PI / 4.0;
     const double DEFAULT_MAXACCELERATION = 1;
     const double DEFAULT_MAXANGULAR = 0.05;
+    const double GRAVITY = 0.2;
 
 
     struct SteeringOutput
