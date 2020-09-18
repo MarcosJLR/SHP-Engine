@@ -144,6 +144,13 @@ namespace shp
                 (*this) /= n;
         }
 
+        // Scale vector to a given size
+        inline void scale(double s)
+        {
+            normalize();
+            (*this) *= s;
+        }
+
         // Distance to another vector
         inline double distance(const Vector3& other)
         {
