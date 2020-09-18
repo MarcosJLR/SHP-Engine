@@ -2,14 +2,14 @@
 
 #include <SDL.h>
 #include <SDL_image.h>
+#include <vector>
 
-#include "Player.hpp"
-
+#include "GameObject.hpp"
 
 namespace shp
 {
     const int SCREEN_WIDTH = 1280;
-    const int SCREEN_HEIGHT = 260;
+    const int SCREEN_HEIGHT = 960;
 
     // Singleton class for the engine
     // Made to join everything together
@@ -42,6 +42,8 @@ namespace shp
             SDL_Window* m_Window;
             SDL_Renderer* m_Renderer;
             static Engine* s_Instance;
-            Player* m_Player;
+
+            std::vector<GameObject*> m_GameObjects;
+
     };
 };

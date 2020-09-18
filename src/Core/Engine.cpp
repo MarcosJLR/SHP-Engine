@@ -37,12 +37,17 @@ namespace shp
         }
 
         TextureManager::GetInstance()->Load("player", "assets/img/Player.png");
-        m_Player = new Player(new ObjectProperties({50,50,50}, 32, 32, 32, "player"));
+        GameObject* player = new Player(new ObjectProperties({50,50,50}, 32, 32, 32, "player"));
+
+        m_GameObjects.push_back(player);
 
         return m_isRunning = true;
     }
 
     void Engine::Clean(){
+        for(GameObject* object : m_GameObjects)
+            object->Clean();
+
         SDL_DestroyRenderer(m_Renderer);
         SDL_DestroyWindow(m_Window);
 
@@ -59,14 +64,17 @@ namespace shp
     }
 
     void Engine::Update(){
-        m_Player->Update(Timer::GetInstance()->GetDeltaTime());
+        for(GameObject* object : m_GameObjects)
+            object->Update(Timer::GetInstance()->GetDeltaTime());
     }
 
     void Engine::Render(){
         SDL_SetRenderDrawColor(m_Renderer, 0xFF, 0xFF, 0xFF, 0xFF);
         SDL_RenderClear(m_Renderer);
 
-        m_Player->Draw();
+        
+        for(GameObject* object : m_GameObjects)
+            object->Draw();
 
         SDL_RenderPresent(m_Renderer);
     }
