@@ -14,16 +14,19 @@ namespace shp
                       double maxSpeed = DEFAULT_MAXSPEED, 
                       double maxRotation = DEFAULT_MAXROTATION)
                 : GameObject(props), 
-                  m_Kinematic(props->transform, orientation, maxSpeed, maxRotation),
-                  m_Collider(props->transform, props->width, props->height, props->depth)
-            {}
+                  m_Kinematic(nullptr),
+                  m_Collider(nullptr)
+            {
+                m_Kinematic = new Kinematic(props->transform, orientation, maxSpeed, maxRotation);
+                m_Collider = new Collider(props->transform, props->width, props->height, props->depth);
+            }
 
             virtual void Draw() override;
             virtual void Update(double dt) override;
             virtual void Clean() override;
             
         protected:
-            Kinematic m_Kinematic;
-            Collider m_Collider;
+            Kinematic* m_Kinematic;
+            Collider* m_Collider;
     };
 };

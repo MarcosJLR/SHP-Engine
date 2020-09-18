@@ -12,7 +12,7 @@ namespace shp
                 return s_Instance = (s_Instance == nullptr ? new CollisionHandler() : s_Instance);
             }
 
-            bool Colliding(Collider collider);
+            bool Colliding(Collider* collider);
             Collision* RayCast(Ray ray);
         
         private:

@@ -2,6 +2,8 @@
 
 #include "Engine.hpp"
 
+#include <cassert>
+
 namespace shp
 {
     const int INF = 0x3f3f3f3f;
@@ -17,11 +19,12 @@ namespace shp
         m_MapObstacles.push_back(Collider(-10, -10, SCREEN_HEIGHT, 1300, INF, 10));                     // Lower wall
     }
 
-    bool CollisionHandler::Colliding(Collider collider)
+    bool CollisionHandler::Colliding(Collider* collider)
     {
+        assert(collider != nullptr);
         for(Collider& obstacle : m_MapObstacles)
         {
-            if(Collider::Intersects(collider, obstacle)) 
+            if(Collider::Intersects(*collider, obstacle)) 
                 return true;
         }
         return false;
