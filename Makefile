@@ -6,7 +6,9 @@ INCLUDE_PATHS = -IC:\MinGWDevLib\include\SDL2 $(addprefix -I, $(SRC_DIR))
 LIBRARY_PATHS = -LC:\MinGWDevLib\lib
 CFLAGS = -Wall -O2 -std=c++17
 LFLAGS = -lmingw32 -lSDL2main -lSDL2 -lSDL2_image
-OBJ_FILES = vector3D.o Kinematic.o TextureManager.o Engine.o CollisionHandler.o Collider.o Timer.o InputHandler.o Character.o Player.o
+OBJ_FILES = vector3D.o Kinematic.o TextureManager.o Engine.o \
+            CollisionHandler.o Collider.o Timer.o InputHandler.o \
+            Character.o Player.o
 OBJS = $(addprefix obj\, $(OBJ_FILES))
 
 shp: src\Main.cpp $(OBJS)
