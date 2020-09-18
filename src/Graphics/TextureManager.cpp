@@ -37,7 +37,7 @@ namespace shp
                               SDL_Point* center, SDL_RendererFlip flip)
     {
         SDL_Rect srcRect = {column * width, row * height, width, height};
-        SDL_Rect dstRect = {x, y, width, height};
+        SDL_Rect dstRect = {x, y, width * scaleFactor, height * scaleFactor};
         SDL_RenderCopyEx(Engine::GetInstance()->GetRenderer(),
                          m_TextureMap[id],
                          &srcRect, &dstRect,
