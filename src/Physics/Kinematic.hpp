@@ -128,4 +128,14 @@ namespace shp
     {
         return x < 0.0 ? -1.0 : 1.0;
     }
+
+    inline double MinAngularDifference(double alfa, double beta)
+    {
+        double result = alfa - beta;
+
+        while(result > M_PI) { result -= 2*M_PI; }
+        while(result < -M_PI) { result += 2*M_PI; }
+        
+        return result;
+    }
 };
