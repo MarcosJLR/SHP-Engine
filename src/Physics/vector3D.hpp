@@ -167,6 +167,13 @@ namespace shp
         {
             return (a - (*this)).cross2D(b - (*this));
         }
+
+        inline double orientation(double current = 0.0)
+        {
+            if(squareNorm() > 0.0)
+                return atan2(-x, z) + M_PI / 2.0;
+            return current;
+        }
     };
 
     inline double RadiansToDegrees(double radians)
