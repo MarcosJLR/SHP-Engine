@@ -1,6 +1,6 @@
 
 CC = g++
-MODULES = Collisions Core Graphics Object Physics Input
+MODULES = Collisions Core Graphics Object Physics Input AI
 SRC_DIR = $(addprefix src\, $(MODULES))
 INCLUDE_PATHS = -IC:\MinGWDevLib\include\SDL2 $(addprefix -I, $(SRC_DIR))
 LIBRARY_PATHS = -LC:\MinGWDevLib\lib
@@ -8,7 +8,8 @@ CFLAGS = -Wall -O2 -std=c++17
 LFLAGS = -lmingw32 -lSDL2main -lSDL2 -lSDL2_image
 OBJ_FILES = vector3D.o Kinematic.o TextureManager.o Engine.o \
             CollisionHandler.o Collider.o Timer.o InputHandler.o \
-            Character.o Player.o
+            Character.o Player.o Seek.o Arrive.o Align.o Face.o \
+            Pursue.o LookWhereYoureGoing.o VelocityMatch.o
 OBJS = $(addprefix obj\, $(OBJ_FILES))
 
 shp: src\Main.cpp $(OBJS)
@@ -43,3 +44,25 @@ obj\Character.o: src\Object\Character.cpp src\Object\Character.hpp
 
 obj\Player.o: src\Object\Player.cpp src\Object\Player.hpp
 	$(CC) -c $< $(INCLUDE_PATHS) $(CFLAGS) -o $@
+
+obj\Seek.o: src\AI\Seek.cpp src\AI\Seek.hpp
+	$(CC) -c $< $(INCLUDE_PATHS) $(CFLAGS) -o $@
+
+obj\Arrive.o: src\AI\Arrive.cpp src\AI\Arrive.hpp
+	$(CC) -c $< $(INCLUDE_PATHS) $(CFLAGS) -o $@
+
+obj\Align.o: src\AI\Align.cpp src\AI\Align.hpp
+	$(CC) -c $< $(INCLUDE_PATHS) $(CFLAGS) -o $@
+
+obj\Face.o: src\AI\Face.cpp src\AI\Face.hpp
+	$(CC) -c $< $(INCLUDE_PATHS) $(CFLAGS) -o $@
+
+obj\LookWhereYoureGoing.o: src\AI\LookWhereYoureGoing.cpp src\AI\LookWhereYoureGoing.hpp
+	$(CC) -c $< $(INCLUDE_PATHS) $(CFLAGS) -o $@
+
+obj\Pursue.o: src\AI\Pursue.cpp src\AI\Pursue.hpp
+	$(CC) -c $< $(INCLUDE_PATHS) $(CFLAGS) -o $@
+
+obj\VelocityMatch.o: src\AI\VelocityMatch.cpp src\AI\VelocityMatch.hpp
+	$(CC) -c $< $(INCLUDE_PATHS) $(CFLAGS) -o $@
+
