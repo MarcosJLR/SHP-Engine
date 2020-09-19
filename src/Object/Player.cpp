@@ -22,6 +22,7 @@ namespace shp
         if(InputHandler::GetInstance()->GetKeyDown(SDL_SCANCODE_E))
             steering.angular += DEFAULT_MAXANGULAR;
 
+        steering += m_Behaviour->GetSteering();
         m_Kinematic->Update(steering, dt);
         Character::Update(dt);
     }
