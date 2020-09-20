@@ -9,7 +9,9 @@ LFLAGS = -lmingw32 -lSDL2main -lSDL2 -lSDL2_image
 OBJ_FILES = vector3D.o Kinematic.o TextureManager.o Engine.o \
             CollisionHandler.o Collider.o Timer.o InputHandler.o \
             Character.o Player.o Seek.o Arrive.o Align.o Face.o \
-            Pursue.o LookWhereYoureGoing.o VelocityMatch.o
+            Pursue.o LookWhereYoureGoing.o VelocityMatch.o \
+            CollisionAvoidance.o ObstacleAvoidance.o \
+            BlendedSteering.o PrioritySteering.o
 OBJS = $(addprefix obj\, $(OBJ_FILES))
 
 shp: src\Main.cpp $(OBJS)
@@ -66,3 +68,14 @@ obj\Pursue.o: src\AI\Pursue.cpp src\AI\Pursue.hpp
 obj\VelocityMatch.o: src\AI\VelocityMatch.cpp src\AI\VelocityMatch.hpp
 	$(CC) -c $< $(INCLUDE_PATHS) $(CFLAGS) -o $@
 
+obj\CollisionAvoidance.o: src\AI\CollisionAvoidance.cpp src\AI\CollisionAvoidance.hpp
+	$(CC) -c $< $(INCLUDE_PATHS) $(CFLAGS) -o $@
+
+obj\ObstacleAvoidance.o: src\AI\ObstacleAvoidance.cpp src\AI\ObstacleAvoidance.hpp
+	$(CC) -c $< $(INCLUDE_PATHS) $(CFLAGS) -o $@
+	
+obj\BlendedSteering.o: src\AI\BlendedSteering.cpp src\AI\BlendedSteering.hpp
+	$(CC) -c $< $(INCLUDE_PATHS) $(CFLAGS) -o $@
+
+obj\PrioritySteering.o: src\AI\PrioritySteering.cpp src\AI\PrioritySteering.hpp
+	$(CC) -c $< $(INCLUDE_PATHS) $(CFLAGS) -o $@
