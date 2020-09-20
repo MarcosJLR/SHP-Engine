@@ -10,6 +10,8 @@ namespace shp
     const double DEFAULT_MAXANGULAR = 0.0075;
     const double GRAVITY = 0.2;
 
+    const double EPS = 1e-6;
+    const double INF = 1.0 / 0.0;
 
     struct SteeringOutput
     {
