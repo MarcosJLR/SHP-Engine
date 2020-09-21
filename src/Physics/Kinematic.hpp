@@ -4,9 +4,9 @@
 
 namespace shp
 {
-    const double DEFAULT_MAXSPEED = 500;
-    const double DEFAULT_MAXROTATION = M_PI / 4.0;
-    const double DEFAULT_MAXACCELERATION = 1;
+    const double DEFAULT_MAXSPEED = 100;
+    const double DEFAULT_MAXROTATION = M_PI / 6.0;
+    const double DEFAULT_MAXACCELERATION = 0.5;
     const double DEFAULT_MAXANGULAR = 0.0075;
     const double GRAVITY = 0.2;
 
@@ -123,7 +123,7 @@ namespace shp
 
             double m_MaxSpeed;
             double m_MaxRotation;
-            double m_Drag{0.95};
+            double m_Drag{0.92};
     };
 
     inline double sgn(double x)
