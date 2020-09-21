@@ -13,10 +13,21 @@ namespace shp
     CollisionHandler::CollisionHandler()
     {
         m_MapObstacles.push_back(Collider(-10, -10, -10, SCREEN_WIDTH + 20, 10, SCREEN_HEIGHT + 20));   // Floor
-        m_MapObstacles.push_back(Collider(-10, -10, -10, SCREEN_WIDTH + 20, INF, 10));                  // Upper wall
-        m_MapObstacles.push_back(Collider(-10, -10, -10, 10, INF, SCREEN_HEIGHT + 20));                 // Left wall
-        m_MapObstacles.push_back(Collider(SCREEN_WIDTH, -10, -10, 10, INF, SCREEN_HEIGHT + 20));        // Right wall
-        m_MapObstacles.push_back(Collider(-10, -10, SCREEN_HEIGHT, 1300, INF, 10));                     // Lower wall
+        m_MapObstacles.push_back(Collider(-10, -10, -10, SCREEN_WIDTH + 20, INF, 42));                  // Upper wall
+        m_MapObstacles.push_back(Collider(-10, -10, -10, 42, INF, SCREEN_HEIGHT + 20));                 // Left wall
+        m_MapObstacles.push_back(Collider(SCREEN_WIDTH - 32, -10, -10, 42, INF, SCREEN_HEIGHT + 20));   // Right wall
+        m_MapObstacles.push_back(Collider(-10, -10, SCREEN_HEIGHT - 32, 1300, INF, 42));                // Lower wall
+
+        m_MapObstacles.push_back(Collider(128, -10, 416, 128, 74, 128));
+        m_MapObstacles.push_back(Collider(256, -10, 256, 96, 74, 448));
+        m_MapObstacles.push_back(Collider(256, -10, 256, 480, 74, 96));
+        m_MapObstacles.push_back(Collider(416, -10, 128, 128, 74, 128));
+        m_MapObstacles.push_back(Collider(352, -10, 608, 192, 74, 96));
+        m_MapObstacles.push_back(Collider(640, -10, 352, 96, 74, 352));
+        m_MapObstacles.push_back(Collider(736, -10, 608, 416, 74, 96));
+        m_MapObstacles.push_back(Collider(832, -10, 704, 128, 74, 128));
+        m_MapObstacles.push_back(Collider(1056, -10, 244, 96, 74, 384));
+        m_MapObstacles.push_back(Collider(832, -10, 128, 320, 74, 96));
     }
 
     bool CollisionHandler::Colliding(Collider* collider)
