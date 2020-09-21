@@ -20,10 +20,17 @@ namespace shp
 
             virtual SteeringOutput GetSteering() override;
 
-            virtual void AddBehaviour(Behaviour* behaviour, double weight = 1.0) 
+            inline void AddBehaviour(Behaviour* behaviour, double weight = 1.0) 
             {
                 m_WeightedBehaviours.push_back({behaviour, weight});
             }
+            inline Behaviour* GetBehaviour(int i)
+            {
+                if(i < 0 || i >= (int) m_WeightedBehaviours.size())
+                    return nullptr;
+                return m_WeightedBehaviours[i].first;
+            }
+
 
         protected:
             std::vector<std::pair<Behaviour*, double>> m_WeightedBehaviours;
