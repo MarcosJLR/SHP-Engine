@@ -1,6 +1,6 @@
 
 CC = g++
-MODULES = Collisions Core Graphics Object Physics Input AI
+MODULES = AI Collisions Core Graph Graphics Input Object Physics  
 SRC_DIR = $(addprefix src\, $(MODULES))
 INCLUDE_PATHS = -IC:\MinGWDevLib\include\SDL2 $(addprefix -I, $(SRC_DIR))
 LIBRARY_PATHS = -LC:\MinGWDevLib\lib
@@ -11,7 +11,8 @@ OBJ_FILES = vector3D.o Kinematic.o TextureManager.o Engine.o \
             Character.o Player.o Seek.o Arrive.o Align.o Face.o \
             Pursue.o LookWhereYoureGoing.o VelocityMatch.o \
             CollisionAvoidance.o ObstacleAvoidance.o \
-            BlendedSteering.o PrioritySteering.o
+            BlendedSteering.o PrioritySteering.o Graph.o \
+            GraphSeek.o Enemy.o
 OBJS = $(addprefix obj\, $(OBJ_FILES))
 
 shp: src\Main.cpp $(OBJS)
@@ -47,6 +48,9 @@ obj\Character.o: src\Object\Character.cpp src\Object\Character.hpp
 obj\Player.o: src\Object\Player.cpp src\Object\Player.hpp
 	$(CC) -c $< $(INCLUDE_PATHS) $(CFLAGS) -o $@
 
+obj\Enemy.o: src\Object\Enemy.cpp src\Object\Enemy.hpp
+	$(CC) -c $< $(INCLUDE_PATHS) $(CFLAGS) -o $@
+
 obj\Seek.o: src\AI\Seek.cpp src\AI\Seek.hpp
 	$(CC) -c $< $(INCLUDE_PATHS) $(CFLAGS) -o $@
 
@@ -79,3 +83,10 @@ obj\BlendedSteering.o: src\AI\BlendedSteering.cpp src\AI\BlendedSteering.hpp
 
 obj\PrioritySteering.o: src\AI\PrioritySteering.cpp src\AI\PrioritySteering.hpp
 	$(CC) -c $< $(INCLUDE_PATHS) $(CFLAGS) -o $@
+
+obj\GraphSeek.o: src\AI\GraphSeek.cpp src\AI\GraphSeek.hpp
+	$(CC) -c $< $(INCLUDE_PATHS) $(CFLAGS) -o $@
+
+obj\Graph.o: src\Graph\Graph.cpp src\Graph\Graph.hpp
+	$(CC) -c $< $(INCLUDE_PATHS) $(CFLAGS) -o $@
+
