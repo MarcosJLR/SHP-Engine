@@ -2,6 +2,9 @@
 
 #include <SDL.h>
 #include <queue>
+#include <fstream>
+#include <iostream>
+#include <algorithm>
 
 #include "Kinematic.hpp"
 #include "Engine.hpp"
@@ -23,13 +26,13 @@ namespace shp
 
     void Node::Draw()
     {
-        int x1 = round(m_Vertex1), y1 = round(m_Vertex1.y);
-        int x2 = round(m_Vertex2), y2 = round(m_Vertex2.y);
-        int x3 = round(m_Vertex3), y3 = round(m_Vertex3.y);
+        int x1 = round(m_Vertex1.x), y1 = round(m_Vertex1.z);
+        int x2 = round(m_Vertex2.x), y2 = round(m_Vertex2.z);
+        int x3 = round(m_Vertex3.x), y3 = round(m_Vertex3.z);
 
         SDL_Renderer* renderer = Engine::GetInstance()->GetRenderer();
 
-        SDL_SetRenderDrawColor(0x00, 0x00, 0x00, 0xFF);
+        SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF);
         SDL_RenderDrawLine(renderer, x1, y1, x2, y2);
         SDL_RenderDrawLine(renderer, x1, y1, x3, y3);
         SDL_RenderDrawLine(renderer, x2, y2, x3, y3);
@@ -37,7 +40,7 @@ namespace shp
 
     int Graph::GetNodeFromPosition(Vector3 position)
     {
-        for(uint i = 0; i < m_NodeCount; i++)
+        for(int i = 0; i < m_NodeCount; i++)
         {
             if(m_NodeList[i].Contains(position))
                 return i;
@@ -65,12 +68,12 @@ namespace shp
             
             for(int u : m_AdjacencyList[v])
             {
-                c = GetCost(v, u);
+                double c = GetCost(v, u);
                 if(distance[v] + c < distance[u])
                 {
                     distance[u] = distance[v] + c;
                     parent[u] = v;
-                    pq.push({-distance[u] - cost(u, dst), u, v});
+                    pq.push({-distance[u] - GetCost(u, dst), u, v});
                 }
             }
         }
@@ -96,9 +99,15 @@ namespace shp
     {
         int src = GetNodeFromPosition(srcPos);
         int dst = GetNodeFromPosition(dstPos);
+
+        if(src == -1 || dst == -1)
+        {
+            return Path();
+        }
+        
         Path path = GetShortestPath(src, dst);
         path.push_back(dstPos);
-        path.push_front(srcPos);
+        path.insert(path.begin(), srcPos);
 
         return path;
     }
@@ -110,9 +119,9 @@ namespace shp
         
         Path result;
         Vector3 currPos = path.front();
-        for(uint i = 1; i+1 < path.size(); i++)
+        for(int i = 1; i+1 < (int) path.size(); i++)
         {
-            Ray ray = { currPos, path[i+1] - currPos };     
+            Ray ray(currPos, path[i+1] - currPos);     
             Collision* collision = CollisionHandler::GetInstance()->RayCast(ray);
 
             if(collision != nullptr){
@@ -125,9 +134,111 @@ namespace shp
         return result;
     }
 
+    void Graph::DrawPath(Path path)
+    {
+        SDL_Renderer* renderer = Engine::GetInstance()->GetRenderer();
+
+        SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
+        for(int i = 1; i < (int) path.size(); i++)
+        {
+            int x1 = path[i-1].x, z1 = path[i-1].z;
+            int x2 = path[i].x, z2 = path[i].z;
+            SDL_RenderDrawLine(renderer, x1, z1, x2, z2);
+        }
+    }
+
     void Graph::Draw()
     {
         for(Node node : m_NodeList)
             node.Draw();
     }
+
+    void Graph::Clean()
+    {
+        m_NodeCount = 0;
+        m_NodeList.clear();
+        m_AdjacencyList.clear();
+    }
+
+    void Graph::Load(const std::string filename)
+    {
+        Clean();
+
+        std::ifstream nodeFile(filename + ".node");
+        std::ifstream elementFile(filename + ".ele");
+        std::ifstream neighborFile(filename + ".neigh");
+
+        if(!nodeFile.is_open()){
+            std::cerr << "Couldn't Open " << filename << ".node file\n";
+            return;
+        }
+        if(!elementFile.is_open()){
+            std::cerr << "Couldn't Open " << filename << ".ele file\n";
+            return;
+        }
+        if(!neighborFile.is_open()){
+            std::cerr << "Couldn't Open " << filename << ".neigh file\n";
+            return;
+        }
+
+        int pointCount, dimensions, attributeCount, boundMarks;
+        std::vector<Vector3> points;
+        nodeFile >> pointCount >> dimensions;
+        nodeFile >> attributeCount >> boundMarks;
+
+        for(int i = 0; i < pointCount; i++)
+        {
+            int id;
+            double x, z, ignoreVar;
+
+            nodeFile >> id >> x >> z;
+
+            for(int j = 0; j < attributeCount; j++)
+                nodeFile >> ignoreVar;
+
+            for(int j = 0; j < boundMarks; j++)
+                nodeFile >> ignoreVar;
+
+            points.push_back({x, 0.0, z});
+        }
+
+        int pointsPerTriangle;
+        elementFile >> m_NodeCount >> pointsPerTriangle;
+        elementFile >> attributeCount;
+        for(int i = 0; i < m_NodeCount; i++)
+        {
+            int id, v1, v2, v3;
+            double ignoreVar;
+
+            elementFile >> id >> v1 >> v2 >> v3;
+            for(int j = 0; j < attributeCount; j++)
+                elementFile >> ignoreVar;
+            
+            m_NodeList.push_back(Node(points[v1-1], points[v2-1], points[v3-1]));
+        }
+
+        m_AdjacencyList = std::vector<std::vector<int>>(m_NodeCount);
+        int edgeCount, neighborsPerNode;
+        neighborFile >> edgeCount >> neighborsPerNode;
+        for(int i = 0; i < edgeCount; i++)
+        {
+            int id, neighbor;
+            neighborFile >> id;
+            id--;
+
+            for(int j = 0; j < neighborsPerNode; j++)
+            {
+                neighborFile >> neighbor;
+                if(neighbor != -1) { m_AdjacencyList[id].push_back(neighbor - 1); }
+            }
+        }
+
+        std::cout << "Graph Loaded correctly\n";
+
+        nodeFile.close();
+        elementFile.close();
+        neighborFile.close();
+    }
+
+
 };
