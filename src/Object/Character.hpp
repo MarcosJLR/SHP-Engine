@@ -21,6 +21,9 @@ namespace shp
                 m_Collider = new Collider(props->transform, props->width, props->height, props->depth);
             }
 
+            inline Kinematic* GetKinematic() { return m_Kinematic; }
+            inline Collider* GetCollider() { return m_Collider; }
+
             virtual void Draw() override;
             virtual void Update(double dt) override;
             virtual void Clean() override;
