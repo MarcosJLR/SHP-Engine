@@ -5,6 +5,8 @@
 #include "InputHandler.hpp"
 #include "TextureManager.hpp"
 #include "Player.hpp"
+#include "Enemy.hpp"
+#include "Graph.hpp"
 
 namespace shp
 {
@@ -36,15 +38,22 @@ namespace shp
             return false;
         }
 
+        Graph::GetInstance()->Load("assets/map/Map.1");
+
         TextureManager::GetInstance()->Load("player", "assets/img/Player.png");
-        GameObject* player = new Player(new ObjectProperties({50,50,50}, 32, 32, 32, "player"));
+        TextureManager::GetInstance()->Load("enemy", "assets/img/Enemy.png");
+        GameObject* player = new Player(new ObjectProperties({100,50,100}, 32, 32, 32, "player"));
+        GameObject* enemy = new Enemy(new ObjectProperties({500,50,500}, 32, 32, 32, "enemy"), (Character*) player);
 
         m_GameObjects.push_back(player);
+        m_GameObjects.push_back(enemy);
 
         return m_isRunning = true;
     }
 
     void Engine::Clean(){
+        Graph::GetInstance()->Clean();
+
         for(GameObject* object : m_GameObjects)
             object->Clean();
 
@@ -72,6 +81,7 @@ namespace shp
         SDL_SetRenderDrawColor(m_Renderer, 0xFF, 0xFF, 0xFF, 0xFF);
         SDL_RenderClear(m_Renderer);
 
+        Graph::GetInstance()->Draw();
         
         for(GameObject* object : m_GameObjects)
             object->Draw();
