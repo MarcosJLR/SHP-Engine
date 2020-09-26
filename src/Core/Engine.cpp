@@ -43,7 +43,7 @@ namespace shp
         TextureManager::GetInstance()->Load("player", "assets/img/Player.png");
         TextureManager::GetInstance()->Load("enemy", "assets/img/Enemy.png");
         GameObject* player = new Player(new ObjectProperties({100,50,100}, 32, 32, 32, "player"));
-        GameObject* enemy = new Enemy(new ObjectProperties({500,50,500}, 32, 32, 32, "enemy"), (Character*) player);
+        GameObject* enemy = new Enemy(new ObjectProperties({500,5,500}, 32, 32, 32, "enemy"), (Character*) player);
 
         m_GameObjects.push_back(player);
         m_GameObjects.push_back(enemy);
