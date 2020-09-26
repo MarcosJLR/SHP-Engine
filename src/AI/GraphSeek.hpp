@@ -25,7 +25,7 @@ namespace shp
 
             inline Path GetPath() { return m_Path; }
 
-        private:
+        protected:
             Kinematic* m_Target;
             int m_TargetNode;
             double m_Radius;
