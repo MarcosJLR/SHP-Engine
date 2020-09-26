@@ -30,9 +30,9 @@ namespace shp
             double m_ShortLookahead;
             double m_WhiskerAngle;
 
-            constexpr const static double DEFAULT_AVOID_DISTANCE = 30.0;
-            constexpr const static double DEFAULT_LONG_LOOKAHEAD = 50.0;
-            constexpr const static double DEFAULT_SHORT_LOOKAHEAD = 30.0;
+            constexpr const static double DEFAULT_AVOID_DISTANCE = 16.0;
+            constexpr const static double DEFAULT_LONG_LOOKAHEAD = 32.0;
+            constexpr const static double DEFAULT_SHORT_LOOKAHEAD = 16.0;
             constexpr const static double DEFAULT_WHISKER_ANGLE = M_PI / 6.0;
     };
 };
