@@ -2,11 +2,15 @@
 #include "Timer.hpp"
 
 #include <iostream>
+#include <cstdlib>
+#include <ctime>
 
 using namespace shp;
 
 int main(int argc, char** argv)
 {
+    srand(time(NULL));
+
     Engine::GetInstance()->Init();
     
     while(Engine::GetInstance()->isRunning())
