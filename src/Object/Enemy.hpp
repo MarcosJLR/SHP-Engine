@@ -4,7 +4,10 @@
 #include "Behaviour.hpp"
 #include "LookWhereYoureGoing.hpp"
 #include "BlendedSteering.hpp"
+#include "PrioritySteering.hpp"
+#include "ObstacleAvoidance.hpp"
 #include "GraphSeek.hpp"
+#include "GraphWander.hpp"
 
 namespace shp
 {
@@ -17,7 +20,8 @@ namespace shp
             {
                 BlendedSteering* behaviour = new BlendedSteering();
                 behaviour->AddBehaviour(new LookWhereYoureGoing(m_Kinematic));
-                behaviour->AddBehaviour(new GraphSeek(m_Kinematic, player->GetKinematic()));
+                behaviour->AddBehaviour(new GraphWander(m_Kinematic));
+                behaviour->AddBehaviour(new ObstacleAvoidance(m_Kinematic));
                 m_Behaviour = behaviour;
             }
 
