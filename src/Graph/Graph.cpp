@@ -121,10 +121,16 @@ namespace shp
         Vector3 currPos = path.front();
         for(int i = 1; i+1 < (int) path.size(); i++)
         {
-            Ray ray(currPos, path[i+1] - currPos);     
-            Collision* collision = CollisionHandler::GetInstance()->RayCast(ray);
+            Vector3 direction = path[i+1] - currPos;
+            Vector3 perpendicular = {-direction.z, direction.y, direction.x};
+            perpendicular.scale(32.0);
 
-            if(collision != nullptr){
+            Ray ray1(currPos + perpendicular, path[i+1] - currPos);     
+            Ray ray2(currPos - perpendicular, path[i+1] - currPos);     
+            Collision* collision1 = CollisionHandler::GetInstance()->RayCast(ray1);
+            Collision* collision2 = CollisionHandler::GetInstance()->RayCast(ray2);
+
+            if(collision1 != nullptr || collision2 != nullptr){
                 result.push_back(path[i]);
                 currPos = path[i];
             }

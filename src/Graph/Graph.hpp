@@ -46,6 +46,7 @@ namespace shp
             static Path SmoothPath(Path path);
             static void DrawPath(Path path);
 
+            inline int GetSize() { return m_NodeCount; }
             inline Vector3 GetCenter(int i) { return m_NodeList[i].GetCenter(); }
             inline double GetCost(int i, int j)
             {
