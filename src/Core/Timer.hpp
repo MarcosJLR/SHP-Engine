@@ -17,7 +17,7 @@ namespace shp
             inline double GetDeltaTime() { return m_DeltaTime; }
 
         private:
-            Timer() {}
+            Timer() : m_DeltaTime(0), m_LastTime(0) {}
             static Timer* s_Instance;
             double m_DeltaTime;
             double m_LastTime;
