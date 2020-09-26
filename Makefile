@@ -12,7 +12,7 @@ OBJ_FILES = vector3D.o Kinematic.o TextureManager.o Engine.o \
             Pursue.o LookWhereYoureGoing.o VelocityMatch.o \
             CollisionAvoidance.o ObstacleAvoidance.o \
             BlendedSteering.o PrioritySteering.o Graph.o \
-            GraphSeek.o Enemy.o
+            GraphSeek.o Enemy.o GraphWander.o
 OBJS = $(addprefix obj\, $(OBJ_FILES))
 
 shp: src\Main.cpp $(OBJS)
@@ -85,6 +85,9 @@ obj\PrioritySteering.o: src\AI\PrioritySteering.cpp src\AI\PrioritySteering.hpp
 	$(CC) -c $< $(INCLUDE_PATHS) $(CFLAGS) -o $@
 
 obj\GraphSeek.o: src\AI\GraphSeek.cpp src\AI\GraphSeek.hpp
+	$(CC) -c $< $(INCLUDE_PATHS) $(CFLAGS) -o $@
+
+obj\GraphWander.o: src\AI\GraphWander.cpp src\AI\GraphWander.hpp
 	$(CC) -c $< $(INCLUDE_PATHS) $(CFLAGS) -o $@
 
 obj\Graph.o: src\Graph\Graph.cpp src\Graph\Graph.hpp
