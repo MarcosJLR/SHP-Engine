@@ -1,6 +1,6 @@
 
 CC = g++
-MODULES = AI Collisions Core Graph Graphics Input Object Physics  
+MODULES = AI Collisions Core Graph Graphics Input Object Physics Perception 
 SRC_DIR = $(addprefix src\, $(MODULES))
 INCLUDE_PATHS = -IC:\MinGWDevLib\include\SDL2 $(addprefix -I, $(SRC_DIR))
 LIBRARY_PATHS = -LC:\MinGWDevLib\lib
@@ -12,7 +12,8 @@ OBJ_FILES = vector3D.o Kinematic.o TextureManager.o Engine.o \
             Pursue.o LookWhereYoureGoing.o VelocityMatch.o \
             CollisionAvoidance.o ObstacleAvoidance.o \
             BlendedSteering.o PrioritySteering.o Graph.o \
-            GraphSeek.o Enemy.o GraphWander.o
+            GraphSeek.o Enemy.o GraphWander.o Sight.o \
+            Motion.o
 OBJS = $(addprefix obj\, $(OBJ_FILES))
 
 shp: src\Main.cpp $(OBJS)
@@ -93,3 +94,8 @@ obj\GraphWander.o: src\AI\GraphWander.cpp src\AI\GraphWander.hpp
 obj\Graph.o: src\Graph\Graph.cpp src\Graph\Graph.hpp
 	$(CC) -c $< $(INCLUDE_PATHS) $(CFLAGS) -o $@
 
+obj\Sight.o: src\Perception\Sight.cpp src\Perception\Sight.hpp
+	$(CC) -c $< $(INCLUDE_PATHS) $(CFLAGS) -o $@
+
+obj\Motion.o: src\Perception\Motion.cpp src\Perception\Motion.hpp
+	$(CC) -c $< $(INCLUDE_PATHS) $(CFLAGS) -o $@
