@@ -123,7 +123,7 @@ namespace shp
         {
             Vector3 direction = path[i+1] - currPos;
             Vector3 perpendicular = {-direction.z, direction.y, direction.x};
-            perpendicular.scale(32.0);
+            perpendicular.scale(34.0);
 
             Ray ray1(currPos + perpendicular, path[i+1] - currPos);     
             Ray ray2(currPos - perpendicular, path[i+1] - currPos);     
