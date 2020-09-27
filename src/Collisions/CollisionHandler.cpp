@@ -6,17 +6,17 @@
 
 namespace shp
 {
-    const int INF = 0x3f3f3f3f;
+    const int INFINT = 0x3f3f3f3f;
 
     CollisionHandler* CollisionHandler::s_Instance = nullptr;
 
     CollisionHandler::CollisionHandler()
     {
         m_MapObstacles.push_back(Collider(-10, -10, -10, SCREEN_WIDTH + 20, 10, SCREEN_HEIGHT + 20));   // Floor
-        m_MapObstacles.push_back(Collider(-10, -10, -10, SCREEN_WIDTH + 20, INF, 42));                  // Upper wall
+        m_MapObstacles.push_back(Collider(-10, -10, -10, SCREEN_WIDTH + 20, INFINT, 42));                  // Upper wall
         m_MapObstacles.push_back(Collider(-10, -10, -10, 42, INF, SCREEN_HEIGHT + 20));                 // Left wall
-        m_MapObstacles.push_back(Collider(SCREEN_WIDTH - 32, -10, -10, 42, INF, SCREEN_HEIGHT + 20));   // Right wall
-        m_MapObstacles.push_back(Collider(-10, -10, SCREEN_HEIGHT - 32, 1300, INF, 42));                // Lower wall
+        m_MapObstacles.push_back(Collider(SCREEN_WIDTH - 32, -10, -10, 42, INFINT, SCREEN_HEIGHT + 20));   // Right wall
+        m_MapObstacles.push_back(Collider(-10, -10, SCREEN_HEIGHT - 32, 1300, INFINT, 42));                // Lower wall
 
         m_MapObstacles.push_back(Collider(128, -10, 416, 128, 74, 128));
         m_MapObstacles.push_back(Collider(256, -10, 256, 96, 74, 448));
