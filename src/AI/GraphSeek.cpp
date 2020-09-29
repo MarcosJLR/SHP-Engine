@@ -26,7 +26,7 @@ namespace shp
             m_CharacterNode = newCharacterNode;
         }
 
-        while(!m_Path.empty() && position.distance(m_Path.back()) < m_Radius)
+        while(!m_Path.empty() && m_CharacterNode == Graph::GetInstance()->GetNodeFromPosition(m_Path.back()))
         {
             m_Path.pop_back();
         }
@@ -40,10 +40,6 @@ namespace shp
 
         delete Seek::m_Target;
         Seek::m_Target = new Kinematic(m_Path.back(), 0, 0, 0);
-        
-        //std::cout << m_Path.back().x << " ";
-        //std::cout << m_Path.back().y << " ";
-        //std::cout << m_Path.back().z << "\n";
 
         return Seek::GetSteering();
     }
