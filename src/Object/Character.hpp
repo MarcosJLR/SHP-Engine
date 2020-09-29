@@ -23,6 +23,9 @@ namespace shp
 
             inline Kinematic* GetKinematic() { return m_Kinematic; }
             inline Collider* GetCollider() { return m_Collider; }
+            inline std::string GetTextureID() { return m_TextureID; }
+
+            inline void SetTextureID(std::string textureID) { m_TextureID = textureID; }
 
             virtual void Draw() override;
             virtual void Update(double dt) override;
