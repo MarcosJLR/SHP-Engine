@@ -17,6 +17,7 @@ namespace shp
                 : Seek(character, nullptr, false, maxAcc),
                   m_Target(target),
                   m_TargetNode(-1),
+                  m_CharacterNode(-1),
                   m_Radius(radius),
                   m_Path()
             {}
@@ -28,6 +29,7 @@ namespace shp
         protected:
             Kinematic* m_Target;
             int m_TargetNode;
+            int m_CharacterNode;
             double m_Radius;
             Path m_Path;
 
