@@ -6,6 +6,7 @@
 
 #include "GameObject.hpp"
 #include "StateCharacter.hpp"
+#include "PapiCup.hpp"
 
 namespace shp
 {
@@ -29,6 +30,9 @@ namespace shp
             void Update();
             void Render();
 
+            void Lose();
+            void Win();
+
             inline bool isRunning() { return m_isRunning; }
             inline SDL_Renderer* GetRenderer() { return m_Renderer; }
 
@@ -37,6 +41,8 @@ namespace shp
             inline StateCharacter* GetJuan() { return m_Juan; }
             inline StateCharacter* GetRed() { return m_Red; }
             inline StateCharacter* GetGreen() { return m_Green; }
+
+            inline PapiCup* GetPapiCup() { return m_PapiCup; }
 
             inline void ActivateChang() { m_ChangActive = true; }
             inline bool ChangAvailable() { return m_ChangTimeLeft > 0; }
@@ -72,6 +78,7 @@ namespace shp
             StateCharacter* m_Juan;
             StateCharacter* m_Red;
             StateCharacter* m_Green;
+            PapiCup* m_PapiCup;
 
             bool m_ChangActive;
             double m_ChangTimeLeft;

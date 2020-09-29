@@ -9,9 +9,12 @@
 #include "Graph.hpp"
 #include "PrisonButton.hpp"
 #include "FranMachine.hpp"
+#include "JuanMachine.hpp"
 #include "GreenMachine.hpp"
 #include "RedMachine.hpp"
 #include "NicoMachine.hpp"
+#include "ExitDoor.hpp"
+#include "PapiCup.hpp"
 
 namespace shp
 {
@@ -46,17 +49,25 @@ namespace shp
         Graph::GetInstance()->Load("assets/map/Map.1");
 
         TextureManager::GetInstance()->Load("nico", "assets/img/Nico.png");
-        TextureManager::GetInstance()->Load("nico-escort", "assets/img/NicoEscort.png");
+        TextureManager::GetInstance()->Load("nico-escort", "assets/img/NicoLove.png");
         TextureManager::GetInstance()->Load("nico-flee", "assets/img/NicoScared.png");
         TextureManager::GetInstance()->Load("nico-dead", "assets/img/NicoWasted.png");
         TextureManager::GetInstance()->Load("juan", "assets/img/Juan.png");
+        TextureManager::GetInstance()->Load("juan-mad", "assets/img/JuanMadKing.png");
         TextureManager::GetInstance()->Load("fran-locked", "assets/img/FranMolestico.png");
         TextureManager::GetInstance()->Load("fran-free", "assets/img/Fran.png");
+        TextureManager::GetInstance()->Load("fran-flee", "assets/img/FranScared.png");
         TextureManager::GetInstance()->Load("fran-nico", "assets/img/FranLove.png");
-        TextureManager::GetInstance()->Load("red", "assets/img/Enemy.png");
-        TextureManager::GetInstance()->Load("green", "assets/img/Player.png");
+        TextureManager::GetInstance()->Load("red", "assets/img/Red.png");
+        TextureManager::GetInstance()->Load("red-changed", "assets/img/RedChanged.png");
+        TextureManager::GetInstance()->Load("green", "assets/img/Green.png");
+        TextureManager::GetInstance()->Load("green-changed", "assets/img/GreenChanged.png");
         TextureManager::GetInstance()->Load("button-pushed", "assets/img/GreenButton.png");
         TextureManager::GetInstance()->Load("button-unpushed", "assets/img/RedButton.png");
+        TextureManager::GetInstance()->Load("exit-door", "assets/img/Exit.png");
+        TextureManager::GetInstance()->Load("papi-cup", "assets/img/TazaPapi16.png");
+        TextureManager::GetInstance()->Load("win-msg", "assets/img/NicoWins.png");
+        TextureManager::GetInstance()->Load("lose-msg", "assets/img/NicoLoses.png");
 
         m_ChangTimeLeft = CHANG_TIME;
         m_ChangRecharge = -1.0;
@@ -69,24 +80,35 @@ namespace shp
         m_NicoDead = false;
 
         PrisonButton* button = new PrisonButton(new ObjectProperties({944, 0, 416}, 32, 32, 32, "button-unpushed"));
+        ExitDoor* exit = new ExitDoor(new ObjectProperties({64, 0, 64}, 64, 64, 64, "exit-door"));
+
+        m_PapiCup = new PapiCup(new ObjectProperties({1150, 0, 64}, 16, 16, 16, "papi-cup"));
 
         m_Nico = new StateCharacter(new ObjectProperties({100, 5, 100}, 32, 32, 32, "nico"), nullptr);
         m_Fran = new StateCharacter(new ObjectProperties({480, 5, 480}, 32, 32, 32, "fran-locked"), nullptr);
-        //m_Juan = new StateCharacter(new ObjectProperties({100, 5, 100}, 32, 32, 32, "juan"), nullptr);
+        m_Juan = new StateCharacter(new ObjectProperties({1150, 5, 64}, 32, 32, 32, "juan"), nullptr);
         m_Red = new StateCharacter(new ObjectProperties({1150, 5, 768}, 32, 32, 32, "red"), nullptr);
-        m_Green = new StateCharacter(new ObjectProperties({1150, 5, 768}, 32, 32, 32, "green"), nullptr);
+        m_Green = new StateCharacter(new ObjectProperties({100, 5, 768}, 32, 32, 32, "green"), nullptr);
 
         m_Nico->SetMachine(new NicoMachine());
         m_Fran->SetMachine(new FranMachine());
-        //m_Juan->SetMachine(new JuanMachine());
+        m_Juan->SetMachine(new JuanMachine());
         m_Red->SetMachine(new RedMachine());
         m_Green->SetMachine(new GreenMachine());
 
+        m_GameObjects.push_back(button);
+        m_GameObjects.push_back(exit);
         m_GameObjects.push_back(m_Nico);
+        m_GameObjects.push_back(m_Juan);
         m_GameObjects.push_back(m_Fran);
         m_GameObjects.push_back(m_Red);
         m_GameObjects.push_back(m_Green);
-        m_GameObjects.push_back(button);
+        m_GameObjects.push_back(m_PapiCup);
+
+        while(!InputHandler::GetInstance()->GetKeyDown(SDL_SCANCODE_SPACE))
+        {
+            Events();
+        }
 
         return m_isRunning = true;
     }
@@ -143,10 +165,17 @@ namespace shp
             object->Update(dt);
     }
 
-    void Engine::Render(){
+    void Engine::Render()
+    {
         SDL_SetRenderDrawColor(m_Renderer, 0xFF, 0xFF, 0xFF, 0xFF);
-        if(m_ChangActive) { SDL_SetRenderDrawColor(m_Renderer, 0x00, 0xFF, 0x00, 0xFF); }
         SDL_RenderClear(m_Renderer);
+
+        if(m_ChangActive) 
+        { 
+            int rb = round(0xFF * (m_ChangTimeLeft / CHANG_TIME));
+            SDL_SetRenderDrawColor(m_Renderer, 0xFF - rb, 0xFF, 0xFF - rb, 0xFF); 
+            SDL_RenderClear(m_Renderer);
+        }
 
         Graph::GetInstance()->Draw();
         
@@ -154,5 +183,39 @@ namespace shp
             object->Draw();
 
         SDL_RenderPresent(m_Renderer);
+    }
+
+    void Engine::Win()
+    {
+        SDL_SetRenderDrawColor(m_Renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+        SDL_RenderClear(m_Renderer);
+
+        TextureManager::GetInstance()->Draw("win-msg", 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+
+        SDL_RenderPresent(m_Renderer);
+
+        while(!InputHandler::GetInstance()->GetKeyDown(SDL_SCANCODE_SPACE))
+        {
+            InputHandler::GetInstance()->Listen();
+        }
+
+        Quit();
+    }
+
+    void Engine::Lose()
+    {
+        SDL_SetRenderDrawColor(m_Renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+        SDL_RenderClear(m_Renderer);
+
+        TextureManager::GetInstance()->Draw("lose-msg", 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+
+        SDL_RenderPresent(m_Renderer);
+
+        while(!InputHandler::GetInstance()->GetKeyDown(SDL_SCANCODE_SPACE))
+        {
+            InputHandler::GetInstance()->Listen();
+        }
+
+        Quit();
     }
 };
