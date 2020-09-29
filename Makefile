@@ -15,7 +15,8 @@ OBJ_FILES = vector3D.o Kinematic.o TextureManager.o Engine.o \
             GraphSeek.o Enemy.o GraphWander.o Sight.o \
             Motion.o PrisonButton.o StateMachine.o \
             FranMachine.o GreenMachine.o RedMachine.o \
-            NicoMachine.o GraphFlee.o Hearing.o
+            NicoMachine.o GraphFlee.o Hearing.o ExitDoor.o \
+			JuanMachine.o PapiCup.o
 OBJS = $(addprefix obj\, $(OBJ_FILES))
 
 shp: src\Main.cpp $(OBJS)
@@ -52,6 +53,12 @@ obj\Player.o: src\Object\Player.cpp src\Object\Player.hpp
 	$(CC) -c $< $(INCLUDE_PATHS) $(CFLAGS) -o $@
 
 obj\Enemy.o: src\Object\Enemy.cpp src\Object\Enemy.hpp
+	$(CC) -c $< $(INCLUDE_PATHS) $(CFLAGS) -o $@
+
+obj\PapiCup.o: src\Object\PapiCup.cpp src\Object\PapiCup.hpp
+	$(CC) -c $< $(INCLUDE_PATHS) $(CFLAGS) -o $@
+
+obj\ExitDoor.o: src\Object\ExitDoor.cpp src\Object\ExitDoor.hpp
 	$(CC) -c $< $(INCLUDE_PATHS) $(CFLAGS) -o $@
 
 obj\PrisonButton.o: src\Object\PrisonButton.cpp src\Object\PrisonButton.hpp
@@ -124,4 +131,7 @@ obj\RedMachine.o: src\StateMachine\RedMachine.cpp src\StateMachine\RedMachine.hp
 	$(CC) -c $< $(INCLUDE_PATHS) $(CFLAGS) -o $@
 
 obj\NicoMachine.o: src\StateMachine\NicoMachine.cpp src\StateMachine\NicoMachine.hpp
+	$(CC) -c $< $(INCLUDE_PATHS) $(CFLAGS) -o $@
+
+obj\JuanMachine.o: src\StateMachine\JuanMachine.cpp src\StateMachine\JuanMachine.hpp
 	$(CC) -c $< $(INCLUDE_PATHS) $(CFLAGS) -o $@
