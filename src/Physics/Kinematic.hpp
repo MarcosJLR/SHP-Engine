@@ -4,9 +4,9 @@
 
 namespace shp
 {
-    const double DEFAULT_MAXSPEED = 100;
+    const double DEFAULT_MAXSPEED = 25;
     const double DEFAULT_MAXROTATION = M_PI / 6.0;
-    const double DEFAULT_MAXACCELERATION = 0.5;
+    const double DEFAULT_MAXACCELERATION = 0.25;
     const double DEFAULT_MAXANGULAR = 0.0075;
     const double GRAVITY = 0.2;
 

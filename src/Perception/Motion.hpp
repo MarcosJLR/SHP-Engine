@@ -6,7 +6,7 @@ namespace shp
 {
     namespace Motion
     {
-        const double DEFAULT_DECAY_FACTOR = 0.85;
+        const double DEFAULT_DECAY_FACTOR = 1.0;
 
         bool CanFeel(Kinematic* character, 
                      Kinematic* target,
