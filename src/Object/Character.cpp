@@ -18,29 +18,46 @@ namespace shp
 
     void Character::Update(double dt)
     {
-        m_Collider->setPosition(m_Kinematic->GetPosition());
-        if(CollisionHandler::GetInstance()->Colliding(m_Collider))
+        Vector3 position = m_Kinematic->GetPosition();
+        Vector3 positionXZ = { position.x, m_Transform.y, position.z };
+        Vector3 positionX = { position.x, m_Transform.y, m_Transform.z };
+        Vector3 positionZ = { m_Transform.x, m_Transform.y, position.z };
+
+        m_Collider->setPosition(position);
+        if(!CollisionHandler::GetInstance()->Colliding(m_Collider))
         {
-            m_Kinematic->SetPositionY(m_Transform.y);
+            m_Transform = position;
+            return;
+        }
+
+        m_Collider->setPosition(positionXZ);
+        if(!CollisionHandler::GetInstance()->Colliding(m_Collider))
+        {
+            m_Kinematic->SetPosition(positionXZ);
             m_Kinematic->SetVelocityY(0.0);
+            m_Transform = positionXZ;
+            return;
         }
 
-        m_Collider->setPosition(m_Kinematic->GetPosition());
-        if(CollisionHandler::GetInstance()->Colliding(m_Collider))
+        m_Collider->setPosition(positionX);
+        if(!CollisionHandler::GetInstance()->Colliding(m_Collider))
         {
-            m_Kinematic->SetPositionX(m_Transform.x);
-            m_Kinematic->SetVelocityX(0.0);
-        }
-
-        m_Collider->setPosition(m_Kinematic->GetPosition());
-        if(CollisionHandler::GetInstance()->Colliding(m_Collider))
-        {
-            m_Kinematic->SetPositionZ(m_Transform.z);
+            m_Kinematic->SetPosition(positionX);
+            m_Kinematic->SetVelocityY(0.0);
             m_Kinematic->SetVelocityZ(0.0);
+            m_Transform = positionX;
+            return;
         }
 
-        m_Transform = m_Kinematic->GetPosition();
-        m_Collider->setPosition(m_Transform);
+        m_Collider->setPosition(positionZ);
+        if(!CollisionHandler::GetInstance()->Colliding(m_Collider))
+        {
+            m_Kinematic->SetPosition(positionZ);
+            m_Kinematic->SetVelocityY(0.0);
+            m_Kinematic->SetVelocityX(0.0);
+            m_Transform = positionZ;
+            return;
+        }
     }
 
     void Character::Clean()
