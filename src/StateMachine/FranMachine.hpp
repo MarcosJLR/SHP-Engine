@@ -35,6 +35,16 @@ namespace shp
             virtual void Exit() override;
     };
 
+    class FranFlee : public State 
+    {
+        public:
+            FranFlee();
+
+            static std::string GetID() { return "fran-flee"; }
+            virtual void Enter() override;
+            virtual void Exit() override;
+    };
+
     class FranMachine : public StateMachine
     {
         public: 
@@ -42,6 +52,7 @@ namespace shp
             {
                 m_StateMap[FranLocked::GetID()] = new FranLocked();
                 m_StateMap[FranFree::GetID()] = new FranFree();
+                m_StateMap[FranFlee::GetID()] = new FranFlee();
                 m_StateMap[FranNico::GetID()] = new FranNico();
                 m_CurrentState = FranLocked::GetID();
             }

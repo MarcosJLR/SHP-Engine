@@ -116,10 +116,10 @@ namespace shp
 
     void GreenChanged::Enter() 
     {
-        //Engine::GetInstance()->GetGreen()->SetTextureID("green-chang");
+        Engine::GetInstance()->GetGreen()->SetTextureID("green-changed");
     }
     void GreenChanged::Exit() 
     {
-        //Engine::GetInstance()->GetGreen()->SetTextureID("green-normal");
+        Engine::GetInstance()->GetGreen()->SetTextureID("green");
     }
 };

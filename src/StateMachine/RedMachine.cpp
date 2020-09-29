@@ -161,11 +161,11 @@ namespace shp
 
     void RedChanged::Enter() 
     {
-        //Engine::GetInstance()->GetRed()->SetTextureID("red-chang");
+        Engine::GetInstance()->GetRed()->SetTextureID("red-changed");
     }
     void RedChanged::Exit() 
     {
-        //Engine::GetInstance()->GetRed()->SetTextureID("red-normal");
+        Engine::GetInstance()->GetRed()->SetTextureID("red");
     }
 
 };

@@ -11,25 +11,72 @@
 #include "GraphSeek.hpp"
 #include "GraphFlee.hpp"
 #include "ObstacleAvoidance.hpp"
+#include "Hearing.hpp"
 
 namespace shp
 {
-    bool NicoCanSeeEnemies()
+    namespace Nico
     {
-        return Sight::CanSee(Engine::GetInstance()->GetNico()->GetKinematic(),
-                             Engine::GetInstance()->GetRed()->GetKinematic()) ||
-               Sight::CanSee(Engine::GetInstance()->GetNico()->GetKinematic(),
-                             Engine::GetInstance()->GetGreen()->GetKinematic());
-    }
-
-    void NicoActivateChang()
-    {
-        if(Engine::GetInstance()->ChangAvailable() &&
-          !Engine::GetInstance()->ChangActive())
+        void ActivateChang()
         {
-            Engine::GetInstance()->ActivateChang();
+            if(Engine::GetInstance()->ChangAvailable() &&
+            !Engine::GetInstance()->ChangActive())
+            {
+                Engine::GetInstance()->ActivateChang();
+            }
         }
-    }
+
+        bool IsFranFree()
+        {
+            return Engine::GetInstance()->IsFranFree();
+        }
+        bool IsNicoDead()
+        {
+            return Engine::GetInstance()->IsNicoDead();
+        }
+        bool IsChangActive()
+        {
+            return Engine::GetInstance()->ChangActive();
+        }
+        bool IsChangAvailable()
+        {
+            return Engine::GetInstance()->ChangAvailable();
+        }
+
+        bool CanSeeFran()
+        {
+            return Sight::CanSee(Engine::GetInstance()->GetNico()->GetKinematic(),
+                                    Engine::GetInstance()->GetFran()->GetKinematic());
+        }
+        bool CanSeeRed()
+        {
+            return Sight::CanSee(Engine::GetInstance()->GetNico()->GetKinematic(),
+                                    Engine::GetInstance()->GetRed()->GetKinematic());
+        }
+        bool CanSeeGreen()
+        {
+            return Sight::CanSee(Engine::GetInstance()->GetNico()->GetKinematic(),
+                                    Engine::GetInstance()->GetGreen()->GetKinematic());
+        }
+
+        bool CanHearFran()
+        {
+            return Hearing::CanHear(Engine::GetInstance()->GetNico()->GetKinematic(),
+                                    Engine::GetInstance()->GetFran()->GetKinematic());
+        }
+        bool CanHearRed()
+        {
+            return Hearing::CanHear(Engine::GetInstance()->GetNico()->GetKinematic(),
+                                    Engine::GetInstance()->GetRed()->GetKinematic());
+        }
+        bool CanHearGreen()
+        {
+            return Hearing::CanHear(Engine::GetInstance()->GetNico()->GetKinematic(),
+                                    Engine::GetInstance()->GetGreen()->GetKinematic());
+        }
+    };
+
+    using namespace Nico;
 
     NicoDead::NicoDead()
     {
@@ -63,17 +110,14 @@ namespace shp
         m_Transitions[NicoFran::GetID()] = 
             []()
             {
-                return Engine::GetInstance()->IsFranFree();
+                return IsFranFree();
             };
         m_Transitions[NicoFlee::GetID()] = 
             []()
             {
-                return !(Engine::GetInstance()->ChangAvailable()) &&
-                       (Sight::CanSee(Engine::GetInstance()->GetNico()->GetKinematic(),
-                                      Engine::GetInstance()->GetRed()->GetKinematic()) ||
-                        Sight::CanSee(Engine::GetInstance()->GetNico()->GetKinematic(),
-                                      Engine::GetInstance()->GetGreen()->GetKinematic()));
-                                
+                return !IsChangAvailable() &&
+                        (CanSeeGreen() || CanSeeRed() ||
+                         CanHearGreen() || CanHearRed());
             };
 
         Kinematic* kinematic = Engine::GetInstance()->GetNico()->GetKinematic();
@@ -101,23 +145,19 @@ namespace shp
         m_Transitions[NicoButton::GetID()] = 
             []()
             {
-                return !(Engine::GetInstance()->IsFranFree());
+                return !IsFranFree();
             };
         m_Transitions[NicoEscort::GetID()] = 
             []()
             {
-                return Sight::CanSee(Engine::GetInstance()->GetFran()->GetKinematic(),
-                                     Engine::GetInstance()->GetNico()->GetKinematic());
+                return CanSeeFran() || CanHearFran();
             };
         m_Transitions[NicoFlee::GetID()] = 
             []()
             {
-                return !(Engine::GetInstance()->ChangAvailable()) &&
-                       (Sight::CanSee(Engine::GetInstance()->GetNico()->GetKinematic(),
-                                      Engine::GetInstance()->GetRed()->GetKinematic()) ||
-                        Sight::CanSee(Engine::GetInstance()->GetNico()->GetKinematic(),
-                                      Engine::GetInstance()->GetGreen()->GetKinematic()));
-                                
+                return !IsChangAvailable() &&
+                       (CanSeeGreen() || CanSeeRed() ||
+                        CanHearGreen() || CanHearRed());
             };
 
         Kinematic* kinematic = Engine::GetInstance()->GetNico()->GetKinematic();
@@ -145,23 +185,19 @@ namespace shp
         m_Transitions[NicoButton::GetID()] = 
             []()
             {
-                return !(Engine::GetInstance()->IsFranFree());
+                return !IsFranFree();
             };
         m_Transitions[NicoFlee::GetID()] = 
             []()
             {
-                return !(Engine::GetInstance()->ChangAvailable()) &&
-                       (Sight::CanSee(Engine::GetInstance()->GetNico()->GetKinematic(),
-                                      Engine::GetInstance()->GetRed()->GetKinematic()) ||
-                        Sight::CanSee(Engine::GetInstance()->GetNico()->GetKinematic(),
-                                      Engine::GetInstance()->GetGreen()->GetKinematic()));
-                                
+                return !IsChangAvailable() &&
+                       (CanSeeGreen() || CanSeeRed() ||
+                        CanHearGreen() || CanHearRed());
             };
         m_Transitions[NicoFran::GetID()] = 
             []()
             {
-                return !(Sight::CanSee(Engine::GetInstance()->GetFran()->GetKinematic(),
-                                       Engine::GetInstance()->GetNico()->GetKinematic()));
+                return !(CanSeeFran() || CanHearFran());
             };
 
         Kinematic* kinematic = Engine::GetInstance()->GetNico()->GetKinematic();
@@ -212,27 +248,30 @@ namespace shp
 
     SteeringOutput NicoButton::GetSteering()
     {
-        if(NicoCanSeeEnemies())
+        if(CanSeeGreen() || CanSeeRed() ||
+           CanHearGreen() || CanHearRed())
         {
-            NicoActivateChang();
+            ActivateChang();
         }
         return State::GetSteering();
     }
 
     SteeringOutput NicoFran::GetSteering()
     {
-        if(NicoCanSeeEnemies())
+        if(CanSeeGreen() || CanSeeRed() ||
+           CanHearGreen() || CanHearRed())
         {
-            NicoActivateChang();
+            ActivateChang();
         }
         return State::GetSteering();
     }
 
     SteeringOutput NicoEscort::GetSteering()
     {
-        if(NicoCanSeeEnemies())
+        if(CanSeeGreen() || CanSeeRed() ||
+           CanHearGreen() || CanHearRed())
         {
-            NicoActivateChang();
+            ActivateChang();
         }
         return State::GetSteering();
     }
