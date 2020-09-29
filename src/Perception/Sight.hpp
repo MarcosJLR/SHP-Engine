@@ -6,7 +6,7 @@ namespace shp
 {
     namespace Sight
     {
-        const double DEFAULT_MAX_DISTANCE = 128;
+        const double DEFAULT_MAX_DISTANCE = 256;
         const double DEFAULT_OPENING_ANGLE = M_PI / 3.0;
         
         bool CanSee(Kinematic* character, 
