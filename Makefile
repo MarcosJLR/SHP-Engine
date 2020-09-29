@@ -1,6 +1,6 @@
 
 CC = g++
-MODULES = AI Collisions Core Graph Graphics Input Object Physics Perception 
+MODULES = AI Collisions Core Graph Graphics Input Object Physics Perception StateMachine
 SRC_DIR = $(addprefix src\, $(MODULES))
 INCLUDE_PATHS = -IC:\MinGWDevLib\include\SDL2 $(addprefix -I, $(SRC_DIR))
 LIBRARY_PATHS = -LC:\MinGWDevLib\lib
@@ -13,7 +13,9 @@ OBJ_FILES = vector3D.o Kinematic.o TextureManager.o Engine.o \
             CollisionAvoidance.o ObstacleAvoidance.o \
             BlendedSteering.o PrioritySteering.o Graph.o \
             GraphSeek.o Enemy.o GraphWander.o Sight.o \
-            Motion.o
+            Motion.o PrisonButton.o StateMachine.o \
+            FranMachine.o GreenMachine.o RedMachine.o \
+            NicoMachine.o GraphFlee.o Hearing.o
 OBJS = $(addprefix obj\, $(OBJ_FILES))
 
 shp: src\Main.cpp $(OBJS)
@@ -52,6 +54,9 @@ obj\Player.o: src\Object\Player.cpp src\Object\Player.hpp
 obj\Enemy.o: src\Object\Enemy.cpp src\Object\Enemy.hpp
 	$(CC) -c $< $(INCLUDE_PATHS) $(CFLAGS) -o $@
 
+obj\PrisonButton.o: src\Object\PrisonButton.cpp src\Object\PrisonButton.hpp
+	$(CC) -c $< $(INCLUDE_PATHS) $(CFLAGS) -o $@
+
 obj\Seek.o: src\AI\Seek.cpp src\AI\Seek.hpp
 	$(CC) -c $< $(INCLUDE_PATHS) $(CFLAGS) -o $@
 
@@ -88,6 +93,9 @@ obj\PrioritySteering.o: src\AI\PrioritySteering.cpp src\AI\PrioritySteering.hpp
 obj\GraphSeek.o: src\AI\GraphSeek.cpp src\AI\GraphSeek.hpp
 	$(CC) -c $< $(INCLUDE_PATHS) $(CFLAGS) -o $@
 
+obj\GraphFlee.o: src\AI\GraphFlee.cpp src\AI\GraphFlee.hpp
+	$(CC) -c $< $(INCLUDE_PATHS) $(CFLAGS) -o $@
+
 obj\GraphWander.o: src\AI\GraphWander.cpp src\AI\GraphWander.hpp
 	$(CC) -c $< $(INCLUDE_PATHS) $(CFLAGS) -o $@
 
@@ -97,5 +105,23 @@ obj\Graph.o: src\Graph\Graph.cpp src\Graph\Graph.hpp
 obj\Sight.o: src\Perception\Sight.cpp src\Perception\Sight.hpp
 	$(CC) -c $< $(INCLUDE_PATHS) $(CFLAGS) -o $@
 
+obj\Hearing.o: src\Perception\Hearing.cpp src\Perception\Hearing.hpp
+	$(CC) -c $< $(INCLUDE_PATHS) $(CFLAGS) -o $@
+
 obj\Motion.o: src\Perception\Motion.cpp src\Perception\Motion.hpp
+	$(CC) -c $< $(INCLUDE_PATHS) $(CFLAGS) -o $@
+
+obj\StateMachine.o: src\StateMachine\StateMachine.cpp src\StateMachine\StateMachine.hpp
+	$(CC) -c $< $(INCLUDE_PATHS) $(CFLAGS) -o $@
+
+obj\FranMachine.o: src\StateMachine\FranMachine.cpp src\StateMachine\FranMachine.hpp
+	$(CC) -c $< $(INCLUDE_PATHS) $(CFLAGS) -o $@
+
+obj\GreenMachine.o: src\StateMachine\GreenMachine.cpp src\StateMachine\GreenMachine.hpp
+	$(CC) -c $< $(INCLUDE_PATHS) $(CFLAGS) -o $@
+
+obj\RedMachine.o: src\StateMachine\RedMachine.cpp src\StateMachine\RedMachine.hpp
+	$(CC) -c $< $(INCLUDE_PATHS) $(CFLAGS) -o $@
+
+obj\NicoMachine.o: src\StateMachine\NicoMachine.cpp src\StateMachine\NicoMachine.hpp
 	$(CC) -c $< $(INCLUDE_PATHS) $(CFLAGS) -o $@
