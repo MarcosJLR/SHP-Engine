@@ -45,9 +45,11 @@ namespace shp
 
             static Path SmoothPath(Path path);
             static void DrawPath(Path path);
+            static double PathLength(Path path);
 
             inline int GetSize() { return m_NodeCount; }
             inline Vector3 GetCenter(int i) { return m_NodeList[i].GetCenter(); }
+            inline std::vector<int> GetNeighbors(int i) { return m_AdjacencyList[i]; }
             inline double GetCost(int i, int j)
             {
                 return m_NodeList[i].GetCenter().distance(m_NodeList[j].GetCenter());

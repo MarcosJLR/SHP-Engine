@@ -246,5 +246,14 @@ namespace shp
         neighborFile.close();
     }
 
+    double Graph::PathLength(Path path)
+    {
+        double result = 0.0;
+        for(int i = 1; i < (int) path.size(); i++)
+        {
+            result += path[i-1].distance(path[i]);
+        }
+        return result;
+    }
 
 };
