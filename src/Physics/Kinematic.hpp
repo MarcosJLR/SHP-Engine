@@ -99,15 +99,19 @@ namespace shp
             inline double GetMaxSpeed() { return m_MaxSpeed; }
             inline double GetMaxRotation() { return m_MaxRotation; }
 
-            inline void SetPosition(Vector3& position) { m_Position = position; }
+            inline void SetPosition(Vector3 position) { m_Position = position; }
             inline void SetPositionX(double x) { m_Position.x = x; }
             inline void SetPositionY(double y) { m_Position.y = y; }
             inline void SetPositionZ(double z) { m_Position.z = z; }
 
-            inline void SetVelocity(Vector3& velocity) { m_Velocity = velocity; }
+            inline void SetVelocity(Vector3 velocity) { m_Velocity = velocity; }
             inline void SetVelocityX(double x) { m_Velocity.x = x; }
             inline void SetVelocityY(double y) { m_Velocity.y = y; }
             inline void SetVelocityZ(double z) { m_Velocity.z = z; }
+
+            inline void SetOrientation(double orientation) { m_Orientation = orientation; }
+
+            inline void SetDrag(double drag) { m_Drag = drag; }
 
             // Update given Accelerations and delta time
             void Update(SteeringOutput steering, double dt);
